@@ -72,7 +72,10 @@ base_sshd_config ()
   echo "VersionAddendum none" >> /etc/ssh/sshd_config.d/custom.conf
 }
 
-
+set_motd ()
+{
+  hostname -s | figlet > /etc/motd
+}
 
 disable_cloud_init ()
 {
