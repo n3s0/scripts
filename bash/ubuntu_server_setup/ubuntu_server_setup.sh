@@ -1,12 +1,16 @@
 #!/bin/bash
 
+LOGFILE="$(realpath $(date +%s)-ubuntu-setup-script.log)"
+FQDN=""
+TIMEZONE=""
+
 set_hostname ()
 {
-  hostnamectl --pretty set-hostname $HOSTNAME
-  hostnamectl --static set-hostname $HOSTNAME
+  hostnamectl --pretty set-hostname $FQDN
+  hostnamectl --static set-hostname $FQDN
 }
 
-set_timzone ()
+set_timezone ()
 {
   timedatactl set-timezone $TIMEZONE
 }
@@ -24,11 +28,6 @@ init_packages ()
 configure_root_full_name ()
 {
   chf -f "`hostname -s` System Administrator" root
-}
-
-create_motd ()
-{
-  hostname -s figlet > /etc/motd
 }
 
 disable_ubuntu_pro_apt_news ()
@@ -58,8 +57,8 @@ generate_ssh_host_keys ()
 
 ufw_init ()
 {
-  ufw allow ssh
   ufw enable
+  ufw allow ssh
   ufw reload
 }
 
@@ -81,3 +80,40 @@ disable_cloud_init ()
 {
   touch /etc/cloud/cloud-init.disabled
 }
+
+set_hostname >> "$LOGFILE" 2>&1
+sleep 1
+
+set_timezone >> "$LOGFILE" 2>&1
+sleep 1
+
+init_update >> "$LOGFILE" 2>&1
+sleep 1
+
+init_packages >> "$LOGFILE" 2>&1
+sleep 1
+
+enable_init_services >> "$LOGFILE" 2>&1
+sleep 1
+
+configure_root_pull_name >> "$LOGFILE" 2>&1
+sleep 1
+
+set_motd >> "$LOGFILE" 2>&1
+sleep 1
+
+disable_motd_ubuntu_spam >> "$LOGFILE" 2>&1
+sleep 1
+
+disable_ubuntu_pro_apt_news >> "$LOGFILE" 2>&1
+sleep 1
+
+disable_cloud_init >> "$LOGFILE" 2>&1
+sleep 1
+
+base_sshd_config >> "$LOGFILE" 2>&1
+sleep 1
+
+ufw_init >> "$LOGFILE" 2>&1
+sleep 1
+
