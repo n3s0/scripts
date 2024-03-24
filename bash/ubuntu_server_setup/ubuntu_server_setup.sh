@@ -27,12 +27,12 @@ init_packages ()
 
 configure_root_full_name ()
 {
-  chf -f "`hostname -s` System Administrator" root
+  chfn -f "`hostname -s` System Administrator" root
 }
 
 disable_ubuntu_pro_apt_news ()
 {
-  pro config set_news=false
+  pro config set apt_news=false
 }
 
 disable_motd_ubuntu_spam ()
