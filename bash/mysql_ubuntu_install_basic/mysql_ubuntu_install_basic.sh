@@ -15,7 +15,7 @@ function check_updates ()
 
 function install_packages ()
 {
-  apt -y install mysql-server
+  apt-get -y install $PACKAGE_LIST
 }
 
 check_updates
