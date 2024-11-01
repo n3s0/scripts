@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""
+file: randfile
+author: Timothy Loftus (n3s0)
+description: Take a file list from a directory and output a random file path.
+"""
+
+import os
+import sys
+import random
+
+def randomFile(dir_path):
+    """Outputs the full path of a random file in specified directory"""
+    if not os.path.exists(dir_path):
+        sys.exit("path does not exist")
+    if not os.path.isdir(dir_path):
+        sys.exit("input is not a directory")
+
+    file_paths = []
+
+    for file in os.listdir(dir_path):
+        abs_path = os.path.join(dir_path, file)
+        if os.path.isfile(abs_path):
+            file_paths.append(abs_path)
+
+    return random.choice(file_paths)
+            
+
+if __name__ == "__main__":
+    args = sys.argv
+    arg_count = len(args)
+
+    if arg_count == 0:
+        print ("randomfile")
+        print ("usage: randomfile [dirpath]")
+
+    if arg_count > 2:
+        sys.exit("more then one argument was provided")
+
+    path = args[1]
+
+    random_path = randomFile(path)
+
+    print (f"{random_path}")
+
